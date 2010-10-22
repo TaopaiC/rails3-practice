@@ -6,6 +6,7 @@ class ForumsController < ApplicationController
   end
 
   def show
+    redirect_to forum_posts_path(@forum)
   end
 
   def new
@@ -15,7 +16,7 @@ class ForumsController < ApplicationController
   def create
     @forum = Forum.new(params[:forum])
     if @forum.save
-      redirect_to forum_path(@forum)
+      redirect_to forum_posts_path(@forum)
     else
       render :new
     end
@@ -26,7 +27,7 @@ class ForumsController < ApplicationController
 
   def update
     if @forum.update_attributes(params[:forum])
-      redirect_to forum_path(@forum)
+      redirect_to forum_posts_path(@forum)
     else
       render :edit
     end
