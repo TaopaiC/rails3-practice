@@ -13,7 +13,16 @@ describe ForumsController do
     end
   end
 
-  pending "GET show"
+  describe "GET show" do
+    it "redirect to forum_forums" do
+      @forum = mock_model(Forum)
+      Forum.should_receive(:find).with(3).and_return(@forum)
+
+      get :show, :id => 3
+
+      response.should redirect_to(forum_posts_path(@forum))
+    end
+  end
 
   pending "GET new"
 
