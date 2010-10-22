@@ -73,7 +73,30 @@ describe ForumsController do
     end
   end
 
-  pending "PUT update"
+  describe "PUT update" do
+    it "update successfully with valid params" do
+      @forum = mock_model(Forum)
+      @params = { "title" => Faker::Lorem.sentence }
+      Forum.should_receive(:find).with(3).and_return(@forum)
+      @forum.should_receive(:update_attributes).with(@params).and_return(true)
+
+      put :update, {:id => 3, :forum => @params}
+
+      response.should redirect_to(forum_posts_path(@forum))
+    end
+
+    it "fails to update with invalid params" do
+      @forum = mock_model(Forum)
+      @params = { "title" => Faker::Lorem.sentence }
+      Forum.should_receive(:find).with(3).and_return(@forum)
+      @forum.should_receive(:update_attributes).with(@params).and_return(false)
+
+      put :update, {:id => 3, :forum => @params}
+
+      assigns(:forum).should eq(@forum)
+      response.should render_template("edit")
+    end
+  end
 
   pending "DELETE destroy"
 end
