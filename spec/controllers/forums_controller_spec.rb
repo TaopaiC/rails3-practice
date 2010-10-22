@@ -98,6 +98,16 @@ describe ForumsController do
     end
   end
 
-  pending "DELETE destroy"
+  describe "DELETE destroy" do
+    it "destroys the requested forum" do
+      @forum = mock_model(Forum)
+      Forum.should_receive(:find).with(3).and_return(@forum)
+      @forum.should_receive(:destroy).and_return(true)
+
+      delete :destroy, {:id => 3}
+
+      response.should redirect_to(forums_path)
+    end
+  end
 end
 
