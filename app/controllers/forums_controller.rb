@@ -1,6 +1,10 @@
 class ForumsController < ApplicationController
   before_filter :find_forum, :except => [:index, :new, :create]
 
+  def index
+    @forums = Forum.all
+  end
+
   def show
   end
 

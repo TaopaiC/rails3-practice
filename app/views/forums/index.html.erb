@@ -1,0 +1,4 @@
+<h2>Forum List</h2>
+<% @forums.each do |forum| %>
+<h3><%= link_to(forum.title, forum_path(forum)) %></h3>
+<% end %>
