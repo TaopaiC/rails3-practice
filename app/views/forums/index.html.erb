@@ -1,3 +1,5 @@
+<%= forums_menu %>
+
 <h2>Forum List</h2>
 <% @forums.each do |forum| %>
 <h3><%= link_to(forum.title, forum_posts_path(forum)) %></h3>
