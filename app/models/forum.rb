@@ -9,4 +9,5 @@
 #
 
 class Forum < ActiveRecord::Base
+  has_many :posts, :autosave => true, :dependent => :destroy
 end
