@@ -6,6 +6,15 @@ class PostsController < ApplicationController
     @post = @forum.posts.build
   end
 
+  def create
+    @post = @forum.posts.build(params[:post])
+    if @post.save
+      redirect_to forum_post_path(@forum, @post)
+    else
+      render :new
+    end
+  end
+
   protected
   def find_forum
     @forum = Forum.find(params[:forum_id])
