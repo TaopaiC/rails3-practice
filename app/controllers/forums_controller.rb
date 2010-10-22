@@ -21,6 +21,9 @@ class ForumsController < ApplicationController
     end
   end
 
+  def edit
+  end
+
   protected
   def find_forum
     @forum = Forum.find(params[:id])

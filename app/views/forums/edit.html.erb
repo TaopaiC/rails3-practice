@@ -1,0 +1,5 @@
+<h2>Edit: <%= @forum.title %></h2>
+
+<% form_for @forum, :url => forum_path(@forum) do |form| %>
+  <%= render :partial => "form", :object => form %>
+<% end %>
