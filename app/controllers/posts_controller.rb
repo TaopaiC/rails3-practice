@@ -2,6 +2,10 @@ class PostsController < ApplicationController
   before_filter :find_forum
   before_filter :find_post,  :except => [:index, :new, :create]
 
+  def index
+    @posts = @forum.posts
+  end
+
   def show
   end
 

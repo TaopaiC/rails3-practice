@@ -1,0 +1,4 @@
+<h2>Forum <%= @forum.title %>: Post List</h2>
+<% @posts.each do |post| %>
+<h3><%= link_to(post.title, forum_post_path(@forum, post)) %></h3>
+<% end %>
