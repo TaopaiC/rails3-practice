@@ -24,6 +24,14 @@ class ForumsController < ApplicationController
   def edit
   end
 
+  def update
+    if @forum.update_attributes(params[:forum])
+      redirect_to forum_path(@forum)
+    else
+      render :edit
+    end
+  end
+
   protected
   def find_forum
     @forum = Forum.find(params[:id])
