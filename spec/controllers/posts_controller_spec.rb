@@ -50,7 +50,7 @@ describe PostsController do
   end
 
   describe "POST create" do
-    it "creates successfully" do
+    before :each do
       @forum = mock_model(Forum)
       @post  = mock_model(Post)
       @posts = []
@@ -59,6 +59,9 @@ describe PostsController do
       controller.should_receive(:find_forum) { controller.instance_variable_set("@forum", @forum) }
       @forum.stub!(:posts).and_return(@posts)
       @posts.should_receive(:build).with(@params).and_return(@post)
+    end
+
+    it "creates successfully" do
       @post.should_receive(:save).and_return(true)
 
       post :create, {:forum_id => 4, :post => @params}
@@ -67,14 +70,6 @@ describe PostsController do
     end
 
     it "fails to create" do
-      @forum = mock_model(Forum)
-      @post  = mock_model(Post)
-      @posts = []
-      @params = { "title" => Faker::Lorem.sentence }
-
-      controller.should_receive(:find_forum) { controller.instance_variable_set("@forum", @forum) }
-      @forum.stub!(:posts).and_return(@posts)
-      @posts.should_receive(:build).with(@params).and_return(@post)
       @post.should_receive(:save).and_return(false)
 
       post :create, {:forum_id => 4, :post => @params}
