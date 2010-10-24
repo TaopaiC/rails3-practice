@@ -16,4 +16,6 @@
 
 class Post < ActiveRecord::Base
   belongs_to :forum
+
+  validates_presence_of :forum_id, :title, :description
 end
