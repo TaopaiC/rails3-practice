@@ -4,12 +4,12 @@ describe PostsController do
 
   def should_find_forum
     @forum = mock_model(Forum)
-    controller.should_receive(:find_forum) { controller.instance_variable_set("@forum", @forum) }
+    controller.should_receive(:find_forum) { controller.instance_variable_set("@forum", @forum) }.ordered
   end
 
   def should_find_post
     @post  = mock_model(Post)
-    controller.should_receive(:find_post ) { controller.instance_variable_set("@post",  @post)  }
+    controller.should_receive(:find_post ) { controller.instance_variable_set("@post",  @post)  }.ordered
   end
 
   describe "before_filter" do
