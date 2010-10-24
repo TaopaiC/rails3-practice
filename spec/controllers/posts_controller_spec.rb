@@ -80,7 +80,20 @@ describe PostsController do
     end
   end
 
-  pending "GET edit"
+  describe "GET edit" do
+    it "returns requested post" do
+      @forum = mock_model(Forum)
+      @post  = mock_model(Post)
+      controller.should_receive(:find_forum) { controller.instance_variable_set("@forum", @forum) }
+      controller.should_receive(:find_post ) { controller.instance_variable_set("@post",  @post)  }
+
+      get :edit, :forum_id => 4, :id => 3
+
+      assigns(:forum).should eq( @forum )
+      assigns(:post ).should eq( @post  )
+      response.should render_template("edit")
+    end
+  end
 
   pending "PUT update"
 
