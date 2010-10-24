@@ -95,7 +95,24 @@ describe PostsController do
     end
   end
 
-  pending "PUT update"
+  describe "PUT update" do
+    before :each do
+      @forum = mock_model(Forum)
+      @post  = mock_model(Post)
+      @params = { "title" => Faker::Lorem.sentence }
+
+      controller.should_receive(:find_forum) { controller.instance_variable_set("@forum", @forum) }
+      controller.should_receive(:find_post ) { controller.instance_variable_set("@post",  @post)  }
+    end
+
+    it "update successfully with valid params" do
+      @post.should_receive(:update_attributes).with(@params).and_return(true)
+
+      get :update, {:forum_id => 4, :id => 3, :post => @params}
+
+      response.should redirect_to(forum_post_path(@forum, @post))
+    end
+  end
 
   pending "DELETE destroy"
 end
