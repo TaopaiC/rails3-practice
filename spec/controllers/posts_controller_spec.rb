@@ -49,7 +49,23 @@ describe PostsController do
     end
   end
 
-  pending "POST create"
+  describe "POST create" do
+    it "creates successfully" do
+      @forum = mock_model(Forum)
+      @post  = mock_model(Post)
+      @posts = []
+      @params = { "title" => Faker::Lorem.sentence }
+
+      controller.should_receive(:find_forum) { controller.instance_variable_set("@forum", @forum) }
+      @forum.stub!(:posts).and_return(@posts)
+      @posts.should_receive(:build).with(@params).and_return(@post)
+      @post.should_receive(:save).and_return(true)
+
+      post :create, {:forum_id => 4, :post => @params}
+
+      response.should redirect_to(forum_post_path(@forum, @post))
+    end
+  end
 
   pending "GET edit"
 
