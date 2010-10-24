@@ -112,6 +112,16 @@ describe PostsController do
 
       response.should redirect_to(forum_post_path(@forum, @post))
     end
+
+    it "fails to update with invalid params" do
+      @post.should_receive(:update_attributes).with(@params).and_return(false)
+
+      get :update, {:forum_id => 4, :id => 3, :post => @params}
+
+      assigns(:forum).should eq(@forum)
+      assigns(:post ).should eq(@post)
+      response.should render_template("edit")
+    end
   end
 
   pending "DELETE destroy"
