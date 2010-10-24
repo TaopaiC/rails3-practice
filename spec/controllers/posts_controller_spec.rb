@@ -124,6 +124,19 @@ describe PostsController do
     end
   end
 
-  pending "DELETE destroy"
+  describe "DELETE destroy" do
+    it "destroys the requested post" do
+      @forum = mock_model(Forum)
+      @post  = mock_model(Post)
+
+      controller.should_receive(:find_forum) { controller.instance_variable_set("@forum", @forum) }
+      controller.should_receive(:find_post ) { controller.instance_variable_set("@post",  @post)  }
+      @post.should_receive(:destroy).and_return(true)
+
+      delete :destroy, {:forum_id => 4, :id => 3}
+
+      response.should redirect_to(forum_posts_path(@forum))
+    end
+  end
 end
 
