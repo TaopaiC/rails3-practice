@@ -32,7 +32,22 @@ describe PostsController do
     end
   end
 
-  pending "GET new"
+  describe "GET new" do
+    it "returns a new post form" do
+      @forum = mock_model(Forum)
+      @post  = mock_model(Post)
+      @posts = []
+      controller.should_receive(:find_forum) { controller.instance_variable_set("@forum", @forum) }
+      @forum.should_receive(:posts).and_return(@posts)
+      @posts.should_receive(:build).and_return(@post)
+
+      get :new, :forum_id => 4
+
+      assigns(:forum).should eq(@forum)
+      assigns(:post ).should eq(@post)
+      response.should render_template("new")
+    end
+  end
 
   pending "POST create"
 
