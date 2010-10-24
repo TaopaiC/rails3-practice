@@ -2,6 +2,11 @@ require File.expand_path("../../spec_helper.rb", __FILE__)
 
 describe PostsController do
 
+  def should_find_forum
+    @forum = mock_model(Forum)
+    controller.should_receive(:find_forum) { controller.instance_variable_set("@forum", @forum) }
+  end
+
   describe "before_filter" do
     it "find_forum returns requested forum" do
       @forum = mock_model(Forum)
@@ -31,9 +36,8 @@ describe PostsController do
 
   describe "GET index" do
     it "returns all posts" do
-      @forum = mock_model(Forum)
+      should_find_forum
       @posts = [mock_model(Post)]
-      controller.should_receive(:find_forum) { controller.instance_variable_set("@forum", @forum) }
       @forum.should_receive(:posts).and_return(@posts)
 
       get :index, :forum_id => 3
@@ -46,9 +50,8 @@ describe PostsController do
 
   describe "GET show" do
     it "returns requested post" do
-      @forum = mock_model(Forum)
+      should_find_forum
       @post  = mock_model(Post)
-      controller.should_receive(:find_forum) { controller.instance_variable_set("@forum", @forum) }
       controller.should_receive(:find_post ) { controller.instance_variable_set("@post",  @post)  }
 
       get :show, :forum_id => 4, :id => 3
@@ -61,10 +64,9 @@ describe PostsController do
 
   describe "GET new" do
     it "returns a new post form" do
-      @forum = mock_model(Forum)
+      should_find_forum
       @post  = mock_model(Post)
       @posts = []
-      controller.should_receive(:find_forum) { controller.instance_variable_set("@forum", @forum) }
       @forum.should_receive(:posts).and_return(@posts)
       @posts.should_receive(:build).and_return(@post)
 
@@ -78,12 +80,11 @@ describe PostsController do
 
   describe "POST create" do
     before :each do
-      @forum = mock_model(Forum)
+      should_find_forum
       @post  = mock_model(Post)
       @posts = []
       @params = { "title" => Faker::Lorem.sentence }
 
-      controller.should_receive(:find_forum) { controller.instance_variable_set("@forum", @forum) }
       @forum.stub!(:posts).and_return(@posts)
       @posts.should_receive(:build).with(@params).and_return(@post)
     end
@@ -109,9 +110,8 @@ describe PostsController do
 
   describe "GET edit" do
     it "returns requested post" do
-      @forum = mock_model(Forum)
+      should_find_forum
       @post  = mock_model(Post)
-      controller.should_receive(:find_forum) { controller.instance_variable_set("@forum", @forum) }
       controller.should_receive(:find_post ) { controller.instance_variable_set("@post",  @post)  }
 
       get :edit, :forum_id => 4, :id => 3
@@ -124,11 +124,10 @@ describe PostsController do
 
   describe "PUT update" do
     before :each do
-      @forum = mock_model(Forum)
+      should_find_forum
       @post  = mock_model(Post)
       @params = { "title" => Faker::Lorem.sentence }
 
-      controller.should_receive(:find_forum) { controller.instance_variable_set("@forum", @forum) }
       controller.should_receive(:find_post ) { controller.instance_variable_set("@post",  @post)  }
     end
 
@@ -153,10 +152,9 @@ describe PostsController do
 
   describe "DELETE destroy" do
     it "destroys the requested post" do
-      @forum = mock_model(Forum)
+      should_find_forum
       @post  = mock_model(Post)
 
-      controller.should_receive(:find_forum) { controller.instance_variable_set("@forum", @forum) }
       controller.should_receive(:find_post ) { controller.instance_variable_set("@post",  @post)  }
       @post.should_receive(:destroy).and_return(true)
 
