@@ -7,6 +7,11 @@ describe PostsController do
     controller.should_receive(:find_forum) { controller.instance_variable_set("@forum", @forum) }
   end
 
+  def should_find_post
+    @post  = mock_model(Post)
+    controller.should_receive(:find_post ) { controller.instance_variable_set("@post",  @post)  }
+  end
+
   describe "before_filter" do
     it "find_forum returns requested forum" do
       @forum = mock_model(Forum)
@@ -51,8 +56,7 @@ describe PostsController do
   describe "GET show" do
     it "returns requested post" do
       should_find_forum
-      @post  = mock_model(Post)
-      controller.should_receive(:find_post ) { controller.instance_variable_set("@post",  @post)  }
+      should_find_post
 
       get :show, :forum_id => 4, :id => 3
 
@@ -111,8 +115,7 @@ describe PostsController do
   describe "GET edit" do
     it "returns requested post" do
       should_find_forum
-      @post  = mock_model(Post)
-      controller.should_receive(:find_post ) { controller.instance_variable_set("@post",  @post)  }
+      should_find_post
 
       get :edit, :forum_id => 4, :id => 3
 
@@ -125,10 +128,8 @@ describe PostsController do
   describe "PUT update" do
     before :each do
       should_find_forum
-      @post  = mock_model(Post)
+      should_find_post
       @params = { "title" => Faker::Lorem.sentence }
-
-      controller.should_receive(:find_post ) { controller.instance_variable_set("@post",  @post)  }
     end
 
     it "update successfully with valid params" do
@@ -153,9 +154,8 @@ describe PostsController do
   describe "DELETE destroy" do
     it "destroys the requested post" do
       should_find_forum
-      @post  = mock_model(Post)
+      should_find_post
 
-      controller.should_receive(:find_post ) { controller.instance_variable_set("@post",  @post)  }
       @post.should_receive(:destroy).and_return(true)
 
       delete :destroy, {:forum_id => 4, :id => 3}
