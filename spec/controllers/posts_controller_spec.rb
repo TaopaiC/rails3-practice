@@ -65,6 +65,24 @@ describe PostsController do
 
       response.should redirect_to(forum_post_path(@forum, @post))
     end
+
+    it "fails to create" do
+      @forum = mock_model(Forum)
+      @post  = mock_model(Post)
+      @posts = []
+      @params = { "title" => Faker::Lorem.sentence }
+
+      controller.should_receive(:find_forum) { controller.instance_variable_set("@forum", @forum) }
+      @forum.stub!(:posts).and_return(@posts)
+      @posts.should_receive(:build).with(@params).and_return(@post)
+      @post.should_receive(:save).and_return(false)
+
+      post :create, {:forum_id => 4, :post => @params}
+
+      assigns(:forum).should eq(@forum)
+      assigns(:post ).should eq(@post)
+      response.should render_template("new")
+    end
   end
 
   pending "GET edit"
