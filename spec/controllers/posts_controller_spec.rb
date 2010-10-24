@@ -2,6 +2,33 @@ require File.expand_path("../../spec_helper.rb", __FILE__)
 
 describe PostsController do
 
+  describe "before_filter" do
+    it "find_forum returns requested forum" do
+      @forum = mock_model(Forum)
+      controller.params = {:forum_id => 4}
+
+      Forum.should_receive(:find).with(4).and_return(@forum)
+      controller.send(:find_forum)
+
+      assigns(:forum).should eq(@forum)
+    end
+
+    it "find_post returns requested post" do
+      @forum = mock_model(Forum)
+      @post  = mock_model(Post)
+      @posts = []
+      controller.params = {:forum_id => 4, :id => 3}
+      controller.instance_variable_set("@forum", @forum)
+      @forum.should_receive(:posts).and_return(@posts)
+      @posts.should_receive(:find).with(3).and_return(@post)
+
+      controller.send(:find_post)
+
+      assigns(:forum).should eq(@forum)
+      assigns(:post ).should eq(@post)
+    end
+  end
+
   describe "GET index" do
     it "returns all posts" do
       @forum = mock_model(Forum)
